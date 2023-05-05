@@ -1,0 +1,17 @@
+---
+- hosts: switches
+  gather_facts: false
+  connection: network_cli
+  become: yes
+
+  tasks:
+  - name: timestamp
+    local_action: command date +%Y%m%d
+    register: timestamp
+
+  - name: configurable backup path
+    nxos_config:
+      backup: yes
+      backup_options:
+        filename: "{{ inventory_hostname }}.cfg"
+        dir_path: /home/user/cisco_backups
